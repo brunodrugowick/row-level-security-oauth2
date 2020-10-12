@@ -9,8 +9,10 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
     @Override
     public void configure(HttpSecurity http) throws Exception {
-        // TODO For now only allowing someone with the ROLE_USER. Later must validade dynamically.
-        http.authorizeRequests().antMatchers("/examples/**").hasRole("USER")
+        http.authorizeRequests()
+                // TODO make the access to the collection resource be dynamic as well
+                .antMatchers("/examples").hasRole("USER")
+                .antMatchers("/examples/{exampleId}").access("hasAuthority('READ_' + #exampleId)")
                 .anyRequest().permitAll();
     }
 }
