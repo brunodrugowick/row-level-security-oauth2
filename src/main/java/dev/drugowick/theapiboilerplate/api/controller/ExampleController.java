@@ -4,7 +4,6 @@ import dev.drugowick.theapiboilerplate.api.model.ExampleModel;
 import dev.drugowick.theapiboilerplate.api.model.input.ExampleInput;
 import dev.drugowick.theapiboilerplate.api.model.mapper.GenericMapper;
 import dev.drugowick.theapiboilerplate.domain.model.Example;
-import dev.drugowick.theapiboilerplate.domain.repository.ExampleRepository;
 import dev.drugowick.theapiboilerplate.domain.service.ExampleService;
 import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.Authorization;
@@ -20,14 +19,13 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ExampleController {
 
-    private final ExampleRepository exampleRepository;
     private final ExampleService exampleService;
     private final GenericMapper<Example, ExampleModel, ExampleInput> mapper;
 
     @GetMapping
     @ApiOperation(value = "Lists examples", authorizations = @Authorization(value = "Bearer"))
     public List<ExampleModel> list() {
-        return mapper.toCollectionModel(exampleRepository.findAll(), ExampleModel.class);
+        return mapper.toCollectionModel(exampleService.findAll(), ExampleModel.class);
     }
 
     @GetMapping("/{id}")
